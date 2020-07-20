@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Asap:400,700|Open+Sans:400,700" rel="stylesheet" type="text/css" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet" />
+        <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+        <meta content="utf-8" http-equiv="encoding">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <style>
+            body, html {
+                font-family: Asap, Arial, Helvetica, sans-serif;
+            }
+            
+            body {
+                background-color: #d7d7e0 !important;
+            }
+
+            .index {
+                width: auto !important;
+                margin-top: 0.8rem;
+            }
+
+            .poster {
+                margin-top: 1.52rem;
+            }
+
+            .rating {
+                margin-top: 0.75rem;
+                margin-right: 0.75rem;
+                width: auto !important;
+                border: 2px solid #667196; color: #667196;
+            }
+        
+            .hero-image {
+                background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("headerbg.png");
+                height: 350px;
+                background-position-x: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+                position: relative;
+            }
+
+            .hero-text {
+                text-align: center;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                color: white;
+            }
+            
+            .entry-list {
+                margin-top: 3%;
+            }
+
+            .entry-row {
+                background-color: #f1f1f4;
+                font-size: 2em;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <div class="hero-image">
+                <div class="hero-text">
+                    <h1>Seasonal Sorter</h1>
+                    <h5><i>seasonal anime list maker</i></h5>
+                </div>
+            </div>
+        </header>
+        <main>
+            <div class="container">
+                <div class="row entry-list">
+                    <div class="col s12" id="seasonal-list">
+                        <!-- <div class="row z-depth-3 entry-row">
+                            <div class="col s1 index">1.</div>
+                            <div class="col s2 poster"><img src="https://media.kitsu.io/anime/poster_images/43025/original.jpg?1582948428" class="responsive-img" /></div>
+                            <div class="col s7">
+                                <div class="row"><h4>Pokemon Movie 23: Coco</h4></div>
+                                <div class="row"><h5>Gekijouban Pocket Monsters: Coco</h5></div>
+                                <div class="row"><h5>劇場版ポケットモンスター ココ</h5></div>
+                            </div>
+                            <div class="col s2 right rating">N/A</div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer>
+
+        </footer>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <script>
+            $(document).ready(async () => {
+                var jsonAnimeData = await preloadAnime();
+                jsonAnimeData.data.forEach((currAnime, index) => {
+                    var poster = currAnime.attributes.posterImage.original;
+                    var titles = currAnime.attributes.titles;
+                    var rating = Math.round(currAnime.attributes.averageRating) * 0.1 || "N/A";
+                    
+                    var $listRoot = $("#seasonal-list");
+                    
+                    var $entryRow = $("<div>", {"class": "row z-depth-3 entry-row"});
+                    var $index = $("<div>", {"class": "col s1 index"});
+                    $index.text((index + 1) + ".");
+                    $entryRow.append($index);
+                    
+                    var $posterDiv = $("<div>", {"class": "col s2 poster"});
+                    var $posterImg = $("<img>", {"class": "responsive-img", "src": poster});
+                    $posterDiv.append($posterImg);
+                    $entryRow.append($posterDiv);
+
+                    var $titlesDiv = $("<div>", {"class": "col s7"});
+                    var $enTitleDiv = $("<div>", {"class": "row"});
+                    var $enTitle = $("<h4>");
+                    $enTitle.text(titles.en);
+                    $enTitleDiv.append($enTitle);
+                    $titlesDiv.append($enTitleDiv);
+                    var $en_jpTitleDiv = $("<div>", {"class": "row"});
+                    var $en_jpTitle = $("<h5>");
+                    $en_jpTitle.text(titles.en_jp);
+                    $en_jpTitleDiv.append($en_jpTitle);
+                    $titlesDiv.append($en_jpTitleDiv);
+                    var $ja_jpTitleDiv = $("<div>", {"class": "row"});
+                    var $ja_jpTitle = $("<h5>");
+                    $ja_jpTitle.text(titles.ja_jp);
+                    $ja_jpTitleDiv.append($ja_jpTitle);
+                    $titlesDiv.append($ja_jpTitleDiv);
+                    $entryRow.append($titlesDiv);
+
+                    var $rating = $("<div>", {"class": "col s2 right rating"});
+                    $rating.text(rating);
+                    $entryRow.append($rating);
+
+                    $listRoot.append($entryRow);
+                });
+                // console.log(jsonAnimeData);
+            });
+
+            var preloadAnime = async () => {
+                var rawData = await fetch("https://kitsu.io/api/edge/anime?filter%5Bseason%5D=summer&filter%5BseasonYear%5D=2020&fields%5Banime%5D=titles%2CposterImage%2CaverageRating");
+                return rawData.json();
+            }
+        </script>
+    </body>
+</html>
