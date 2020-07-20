@@ -16,6 +16,11 @@
                 background-color: #d7d7e0 !important;
             }
 
+            ul.pagination li.active {
+                color: #d7d7e0 !important;
+                background-color: #667196 !important;
+            }
+
             .index {
                 width: auto !important;
                 margin-top: 0.8rem;
@@ -87,6 +92,19 @@
                         </div> -->
                     </div>
                 </div>
+                <div class="row">
+                    <div class="center">
+                        <ul class="pagination" id="paginator">
+                            
+                            <!-- <li class="active"><a href="#!">1</a></li>
+                            <li class="waves-effect"><a href="#!">2</a></li>
+                            <li class="waves-effect"><a href="#!">3</a></li>
+                            <li class="waves-effect"><a href="#!">4</a></li>
+                            <li class="waves-effect"><a href="#!">5</a></li>
+                            <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li> -->
+                        </ul>
+                    </div>
+                </div>
             </div>
         </main>
         <footer>
@@ -97,23 +115,88 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
         <script>
             $(document).ready(async () => {
-                var jsonAnimeData = await preloadAnime();
-                buildList(jsonAnimeData);
+                var jsonAnimeData = await fetchAnimeData("https://kitsu.io/api/edge/anime?filter%5Bseason%5D=summer&filter%5BseasonYear%5D=2020&fields%5Banime%5D=titles%2CposterImage%2CaverageRating");
+                buildPagination(jsonAnimeData);
+                
+                // var constructedPages = [];
+
+
+                // constructedPages.push(buildList(jsonAnimeData));
+
+                // var $listRoot = $("#seasonal-list");
+                // constructedPages.forEach((page) => $listRoot.append(page));
             });
 
-            var preloadAnime = async () => {
-                var rawData = await fetch("https://kitsu.io/api/edge/anime?filter%5Bseason%5D=summer&filter%5BseasonYear%5D=2020&fields%5Banime%5D=titles%2CposterImage%2CaverageRating");
+            var fetchAnimeData = async (url) => {
+                var rawData = await fetch(url);
                 return rawData.json();
+            };
+
+            var buildPagination = (jsonAnimeData) =>{
+                var pageCount = Math.ceil(jsonAnimeData.meta.count / 10);
+                var $paginator = $("#paginator");
+                var leftArrow = $('<li class="waves-effect"><a href="#!"><i class="material-icons">chevron_left</i></a></li>');
+                var rightArrow = $('<li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>');
+                leftArrow.click(handleArrowClick);
+                rightArrow.click(handleArrowClick);
+                $paginator.append(leftArrow);
+                for(var i = 1; i <= pageCount; i++) {
+                    var $li = $("<li>", {"class": "waves-effect", "id": "page" + i});
+                    var $a = $("<a>", {"href": "#!"});
+                    $a.text(i);
+                    $a.click(handlePageClick);
+                    $li.append($a);
+                    $paginator.append($li);
+                }
+                $paginator.append(rightArrow);
+                $("#page1")[0].children[0].click();
             }
 
+            var handleArrowClick = async (e) => {
+                var $currentlySelected = $(".active");
+                var index = $currentlySelected[0].id.split("page")[1];
+
+                if(e.target.textContent == "chevron_left" && $("#page" + (parseInt(index) - 1)).length > 0) {
+                    $currentlySelected.addClass("waves-effect");
+                    $currentlySelected.removeClass("active");
+                    $("#page" + (parseInt(index) - 1)).addClass("active");
+                    $("#page" + (parseInt(index) - 1)).removeClass("waves-effect");
+                }
+                
+                if(e.target.textContent == "chevron_right" && $("#page" + (parseInt(index) + 1)).length > 0) {
+                    $currentlySelected.addClass("waves-effect");
+                    $currentlySelected.removeClass("active");
+                    $("#page" + (parseInt(index) + 1)).addClass("active");
+                    $("#page" + (parseInt(index) + 1)).removeClass("waves-effect");
+                }
+
+                await cleanAndInsertData();
+            }
+
+            var handlePageClick = async (e) => {
+                $(".active").addClass("waves-effect");
+                $(".active").removeClass("active");
+                e.target.parentNode.classList.add("active");
+                e.target.parentNode.classList.remove("waves-effect");
+                
+                await cleanAndInsertData();
+            };
+
+            var cleanAndInsertData = async () => {
+                var $listRoot = $("#seasonal-list");
+                $listRoot.empty();
+                var offset = ($(".active")[0].id.split("page")[1] - 1) * 10; // Exmaple: page3 -> ["", "3"] after split, take index from name, go back one tier to represent current starting spot of entries, and multiply by number of entries per page
+                var jsonAnimeData = await fetchAnimeData("https://kitsu.io/api/edge/anime?fields%5Banime%5D=titles%2CposterImage%2CaverageRating&filter%5Bseason%5D=summer&filter%5BseasonYear%5D=2020&page%5Blimit%5D=10&page%5Boffset%5D=" + offset);
+                $listRoot.append(buildList(jsonAnimeData));
+            };
+
             var buildList = (jsonAnimeData) => {
+                var generatedElements = [];
                 jsonAnimeData.data.forEach((currAnime, index) => {
                     var poster = currAnime.attributes.posterImage.original;
                     var titles = currAnime.attributes.titles;
                     var rating = Number.parseFloat(currAnime.attributes.averageRating * 0.1).toFixed(1);
                     if(rating == 0.0) rating = "N/A";
-                    
-                    var $listRoot = $("#seasonal-list");
                     
                     var $entryRow = $("<div>", {"class": "row z-depth-3 entry-row"});
                     var $index = $("<div>", {"class": "col s1 index"});
@@ -153,9 +236,11 @@
                     $rating.text(rating);
                     $entryRow.append($rating);
 
-                    $listRoot.append($entryRow);
+                    generatedElements.push($entryRow);
                 });
-            }
+
+                return generatedElements;
+            };
         </script>
     </body>
 </html>
