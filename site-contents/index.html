@@ -23,6 +23,7 @@
 
             .poster {
                 margin-top: 1.52rem;
+                margin-bottom: 0.8rem;
             }
 
             .rating {
@@ -73,6 +74,7 @@
             <div class="container">
                 <div class="row entry-list">
                     <div class="col s12" id="seasonal-list">
+                        <!-- Example Entry -->
                         <!-- <div class="row z-depth-3 entry-row">
                             <div class="col s1 index">1.</div>
                             <div class="col s2 poster"><img src="https://media.kitsu.io/anime/poster_images/43025/original.jpg?1582948428" class="responsive-img" /></div>
@@ -96,10 +98,20 @@
         <script>
             $(document).ready(async () => {
                 var jsonAnimeData = await preloadAnime();
+                buildList(jsonAnimeData);
+            });
+
+            var preloadAnime = async () => {
+                var rawData = await fetch("https://kitsu.io/api/edge/anime?filter%5Bseason%5D=summer&filter%5BseasonYear%5D=2020&fields%5Banime%5D=titles%2CposterImage%2CaverageRating");
+                return rawData.json();
+            }
+
+            var buildList = (jsonAnimeData) => {
                 jsonAnimeData.data.forEach((currAnime, index) => {
                     var poster = currAnime.attributes.posterImage.original;
                     var titles = currAnime.attributes.titles;
-                    var rating = Math.round(currAnime.attributes.averageRating) * 0.1 || "N/A";
+                    var rating = Number.parseFloat(currAnime.attributes.averageRating * 0.1).toFixed(1);
+                    if(rating == 0.0) rating = "N/A";
                     
                     var $listRoot = $("#seasonal-list");
                     
@@ -114,21 +126,27 @@
                     $entryRow.append($posterDiv);
 
                     var $titlesDiv = $("<div>", {"class": "col s7"});
-                    var $enTitleDiv = $("<div>", {"class": "row"});
-                    var $enTitle = $("<h4>");
-                    $enTitle.text(titles.en);
-                    $enTitleDiv.append($enTitle);
-                    $titlesDiv.append($enTitleDiv);
-                    var $en_jpTitleDiv = $("<div>", {"class": "row"});
-                    var $en_jpTitle = $("<h5>");
-                    $en_jpTitle.text(titles.en_jp);
-                    $en_jpTitleDiv.append($en_jpTitle);
-                    $titlesDiv.append($en_jpTitleDiv);
-                    var $ja_jpTitleDiv = $("<div>", {"class": "row"});
-                    var $ja_jpTitle = $("<h5>");
-                    $ja_jpTitle.text(titles.ja_jp);
-                    $ja_jpTitleDiv.append($ja_jpTitle);
-                    $titlesDiv.append($ja_jpTitleDiv);
+                    if(titles.en) {
+                        var $enTitleDiv = $("<div>", {"class": "row"});
+                        var $enTitle = $("<h5>");
+                        $enTitle.text(titles.en);
+                        $enTitleDiv.append($enTitle);
+                        $titlesDiv.append($enTitleDiv);
+                    }
+                    if(titles.en_jp) {
+                        var $en_jpTitleDiv = $("<div>", {"class": "row"});
+                        var $en_jpTitle = $("<h6>");
+                        $en_jpTitle.text(titles.en_jp);
+                        $en_jpTitleDiv.append($en_jpTitle);
+                        $titlesDiv.append($en_jpTitleDiv);
+                    }
+                    if(titles.ja_jp) {
+                        var $ja_jpTitleDiv = $("<div>", {"class": "row"});
+                        var $ja_jpTitle = $("<h6>");
+                        $ja_jpTitle.text(titles.ja_jp);
+                        $ja_jpTitleDiv.append($ja_jpTitle);
+                        $titlesDiv.append($ja_jpTitleDiv);
+                    }
                     $entryRow.append($titlesDiv);
 
                     var $rating = $("<div>", {"class": "col s2 right rating"});
@@ -137,12 +155,6 @@
 
                     $listRoot.append($entryRow);
                 });
-                // console.log(jsonAnimeData);
-            });
-
-            var preloadAnime = async () => {
-                var rawData = await fetch("https://kitsu.io/api/edge/anime?filter%5Bseason%5D=summer&filter%5BseasonYear%5D=2020&fields%5Banime%5D=titles%2CposterImage%2CaverageRating");
-                return rawData.json();
             }
         </script>
     </body>
