@@ -64,6 +64,11 @@
                 background-color: #f1f1f4;
                 font-size: 2em;
             }
+			
+			.temp {
+				display: flex;
+				justify-content: center;
+			}
         </style>
     </head>
     <body>
@@ -71,12 +76,24 @@
             <div class="hero-image">
                 <div class="hero-text">
                     <h1>Seasonal Sorter</h1>
-                    <h5><i>seasonal anime list maker</i></h5>
                 </div>
             </div>
         </header>
         <main>
             <div class="container">
+				<div class="row temp">
+					<div class="input-field col">
+						<select id="season-select" onchange="handleChangeSeason(this)">
+							<option value="spring">Spring</option>
+							<option value="summer">Summer</option>
+							<option value="fall">Fall</option>
+							<option value="winter">Winter</option>
+						</select>
+					</div>
+					<div class="input-field col">
+						<select id="year-select" onchange="handleChangeYear(this)"></select>
+					</div>
+				</div>
                 <div class="row entry-list">
                     <div class="col s12" id="seasonal-list">
                         <!-- Example Entry -->
@@ -95,7 +112,6 @@
                 <div class="row">
                     <div class="center">
                         <ul class="pagination" id="paginator">
-                            
                             <!-- <li class="active"><a href="#!">1</a></li>
                             <li class="waves-effect"><a href="#!">2</a></li>
                             <li class="waves-effect"><a href="#!">3</a></li>
@@ -114,25 +130,37 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
         <script>
+			var selectedYear = new Date(Date.now()).getUTCFullYear();
+			var selectedSeason = "spring";
             $(document).ready(async () => {
-                var jsonAnimeData = await fetchAnimeData("https://kitsu.io/api/edge/anime?filter%5Bseason%5D=summer&filter%5BseasonYear%5D=2020&fields%5Banime%5D=titles%2CposterImage%2CaverageRating");
+				$('#season-select').formSelect();
+				var currentYear = new Date(Date.now()).getUTCFullYear();
+				var years = [currentYear, currentYear - 1, currentYear - 2, currentYear - 3, currentYear - 4];
+				years.forEach((year) => {
+					var $option = $("<option>", {"value": year});
+					$option.text(year);
+					$('#year-select').append($option);
+				});
+				$('#year-select').formSelect();
+				
+                var jsonAnimeData = await fetchAnimeData("https://kitsu.io/api/edge/anime?filter%5Bseason%5D=" + selectedSeason + "&filter%5BseasonYear%5D=" + selectedYear + "&fields%5Banime%5D=titles%2CposterImage%2CaverageRating");
                 buildPagination(jsonAnimeData);
-                
-                // var constructedPages = [];
-
-
-                // constructedPages.push(buildList(jsonAnimeData));
-
-                // var $listRoot = $("#seasonal-list");
-                // constructedPages.forEach((page) => $listRoot.append(page));
             });
+
+			var setSeason = (e) => {
+				selectedSeason = e.value;
+			};
+
+			var setYear = (e) => {
+				selectedYear = e.value;
+			};
 
             var fetchAnimeData = async (url) => {
                 var rawData = await fetch(url);
                 return rawData.json();
             };
 
-            var buildPagination = (jsonAnimeData) =>{
+            var buildPagination = (jsonAnimeData) => {
                 var pageCount = Math.ceil(jsonAnimeData.meta.count / 10);
                 var $paginator = $("#paginator");
                 var leftArrow = $('<li class="waves-effect"><a href="#!"><i class="material-icons">chevron_left</i></a></li>');
@@ -182,12 +210,38 @@
                 await cleanAndInsertData();
             };
 
+			var clearPagination = () => {
+				var $paginator = $("#paginator");
+				$paginator.empty();
+			}
+			
+			var handleChangeSeason = async (e) => {
+				setSeason(e);
+				clearPagination();
+				var jsonAnimeData = await cleanAndInsertData();
+				buildPagination(jsonAnimeData);
+			}
+			
+			var handleChangeYear = async (e) => {
+				setYear(e);
+				clearPagination();
+				var jsonAnimeData = await cleanAndInsertData();
+				buildPagination(jsonAnimeData);
+			}
+
             var cleanAndInsertData = async () => {
                 var $listRoot = $("#seasonal-list");
                 $listRoot.empty();
-                var offset = ($(".active")[0].id.split("page")[1] - 1) * 10; // Exmaple: page3 -> ["", "3"] after split, take index from name, go back one tier to represent current starting spot of entries, and multiply by number of entries per page
-                var jsonAnimeData = await fetchAnimeData("https://kitsu.io/api/edge/anime?fields%5Banime%5D=titles%2CposterImage%2CaverageRating&filter%5Bseason%5D=summer&filter%5BseasonYear%5D=2020&page%5Blimit%5D=10&page%5Boffset%5D=" + offset);
+				var offset;
+				if($(".active")[0]) {
+					offset = ($(".active")[0].id.split("page")[1] - 1) * 10; // Exmaple: page3 -> ["", "3"] after split, take index from name, go back one tier to represent current starting spot of entries, and multiply by number of entries per page
+				}
+				else {
+					offset = 0;
+				}
+                var jsonAnimeData = await fetchAnimeData("https://kitsu.io/api/edge/anime?fields%5Banime%5D=titles%2CposterImage%2CaverageRating&filter%5Bseason%5D=" + selectedSeason + "&filter%5BseasonYear%5D=" + selectedYear + "&page%5Blimit%5D=10&page%5Boffset%5D=" + offset);
                 $listRoot.append(buildList(jsonAnimeData));
+				return jsonAnimeData;
             };
 
             var buildList = (jsonAnimeData) => {
