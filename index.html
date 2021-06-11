@@ -42,9 +42,10 @@
                 $('#tagline').text(originalText + entry);
                 setInterval(() => {
                     var rnd = Math.floor(Math.random() * entries.length);
-                    var lentry = without(entries, entry)[rnd];
+                    var lentry = _.without(entries, entry)[rnd];
                     entry = lentry;
                     $('#tagline').text(originalText + lentry);
+                    console.log(Date.now());
                 }, 4000); 
             });
         </script>
