@@ -43,8 +43,8 @@
                 console.log('entries:', entries);
                 console.log('rnd:', rnd);
 
-                var original = $('#tagline').text;
-                $('#tagline').text = original + entries[rnd];
+                var original = $('#tagline').text();
+                $('#tagline').text(original + entries[rnd]);
             });
         </script>
     </body>
