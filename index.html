@@ -36,6 +36,9 @@
                     .then(response => response.text())
                     .then(text => text.split(','));
                 var originalText = $('#tagline').text();
+                var rnd = Math.floor(Math.random() * entries.length);
+                var entry = entries[rnd];
+                $('#tagline').text(originalText + entry);
                 setInterval(() => {
                     var rnd = Math.floor(Math.random() * entries.length);
                     var entry = entries[rnd];
