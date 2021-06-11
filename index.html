@@ -40,6 +40,9 @@
                     .then(text => text.split(','));
                 var rnd = Math.floor(Math.random() * entries.length);
 
+                console.log('entries:', entries);
+                console.log('rnd:', rnd);
+
                 var original = $('#tagline').text;
                 $('#tagline').text = original + entries[rnd];
             });
