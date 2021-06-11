@@ -1,0 +1,16 @@
+* {
+    font-family: 'Josefin Slab', serif;
+}
+
+h1 {
+    font-family: 'Fredericka the Great', cursive;
+}
+
+#title-card {
+    background-image: url(./banner.png);
+    height: 950px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+}
