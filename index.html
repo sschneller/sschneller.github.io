@@ -14,7 +14,11 @@
         <header>
             <div id="title-card" class="position-relative">
                 <div id="title-content" class="position-absolute top-50 start-50 translate-middle d-flex align-items-center">
-                    <img id="avatar" height="327px" width="327px" src="./avatar.jpg" class="rounded-circle" alt="Silly Picture of Me">
+                    <div id="avatar-outer" class="rounded-circle">
+                        <div id="avatar-inner" class="rounded-circle">
+                            <img height="330px" width="330px" src="./avatar.jpg" class="rounded-circle" alt="Silly Picture of Me">
+                        </div>
+                    </div>
                     <div>
                         <h1 id="name" class="text-white display-2">I'm Samuel Schneller</h1>
                         <h2 id="tagline" class="text-muted fst-italic">Front-end Developer and </h2>
@@ -33,7 +37,11 @@
         <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js" integrity="sha256-qXBd/EfAdjOA2FGrGAG+b3YBn2tn5A6bhz+LSgYD96k=" crossorigin="anonymous"></script>
         <script>
             $(document).ready(async () => {
-                var entries = await fetch('./thoughts.txt')
+                generateTagline();
+            });
+
+            var generateTagline = async () => {
+                var entries = await fetch('https://raw.githubusercontent.com/sschneller/sschneller.github.io/master/thoughts.txt')
                     .then(response => response.text())
                     .then(text => text.split(','));
                 var originalText = $('#tagline').text();
@@ -41,13 +49,13 @@
                 var entry = entries[rnd];
                 $('#tagline').text(originalText + entry);
                 setInterval(() => {
-                    var rnd = Math.floor(Math.random() * entries.length);
+                    var without = _.without(entries, entry);
+                    var rnd = Math.floor(Math.random() * without.length);
                     var lentry = _.without(entries, entry)[rnd];
                     entry = lentry;
                     $('#tagline').text(originalText + lentry);
-                    console.log(Date.now());
                 }, 4000); 
-            });
+            };
         </script>
     </body>
 </html>
