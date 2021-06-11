@@ -1,4 +1,4 @@
-/* ////////////////// Global Changes ///////////////// */
+/* ///////////////// Global Changes ///////////////// */
 * {
     font-family: 'Josefin Slab', serif;
 }
@@ -16,7 +16,20 @@ a, button {
     outline: medium none;
 }
 
-/* ////////////////// Navbar ///////////////// */
+a, .button {
+    transition: .3s;
+}
+
+body {
+    overflow: visible;
+}
+
+/* ///////////////// Navbar ///////////////// */
+
+.navbar-brand {
+    padding: 0 !important;
+    font-size: 32px;
+}
 
 .border-btn {
     border: 2px solid #fff;
@@ -24,7 +37,7 @@ a, button {
     background: #fff;
     border-radius: 30px;
     text-transform: capitalize;
-    padding: 12px 36px;
+    padding: 10px 30px;
     -moz-user-select: none;
     cursor: pointer;
     display: inline-block;
@@ -37,7 +50,23 @@ a, button {
     margin: 0;
 }
 
-/* ///////////////// Title Card ////////////////// */
+/* ///////////////// Title Card ///////////////// */
+
+#title-avatar-name {
+    min-height: 900px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    background-image: url(./banner.png);
+}
+
+.container {
+	width: 100%;
+	padding-right: 15px;
+	padding-left: 15px;
+	margin-right: auto;
+	margin-left: auto;
+}
 
 #avatar-outer {
     padding: 5px;
@@ -54,11 +83,36 @@ a, button {
     width: 350px !important;
 }
 
-#title-card {
-    background-image: url(./banner.png);
-    height: 950px;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    display: flex;
+#title-contact {
+    position: absolute;
+    bottom: 85px;
+    left: 0;
+    right: 0;
+}
+
+.icon {
+    padding: 8px 7px 6px 7px;
+    margin-right: 1rem;
+}
+
+/* ///////////////// Scrollspy Button ///////////////// */
+
+#back-top {
+	background: #765137;
+	height: 50px;
+	width: 50px;
+	right: 31px;
+	bottom: 18px;
+	position: fixed;
+	font-size: 20px;
+	text-align: center;
+	border-radius: 50%;
+	line-height: 44px;
+	border: 2px solid transparent;
+	box-shadow: 0 0 10px 3px rgba(108,98,98,.2);
+}
+
+#back-top a i {
+    display: block;
+    line-height: 50px;
 }
