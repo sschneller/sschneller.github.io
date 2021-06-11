@@ -17,7 +17,7 @@
         <main>
             <div id="title-card" class="position-relative">
                 <div id="title-content" class="position-absolute top-50 start-50 translate-middle d-flex align-items-center">
-                    <img id="avatar" height="327px" width="327px" src="https://i.imgur.com/eDEbPoa.jpg" class="rounded-circle" alt="Silly Picture of Me">
+                    <img id="avatar" height="327px" width="327px" src="./avatar.jpg" class="rounded-circle" alt="Silly Picture of Me">
                     <div class="text-white">
                         <h1 id="name" class="display-2">I'm Samuel Schneller</h1>
                         <h3 id="tagline" class="fst-italic">Front-end Developer and </h3>
@@ -38,13 +38,12 @@
                 var entries = await fetch('./thoughts.txt')
                     .then(response => response.text())
                     .then(text => text.split(','));
-                var rnd = Math.floor(Math.random() * entries.length);
-
-                console.log('entries:', entries);
-                console.log('rnd:', rnd);
-
-                var original = $('#tagline').text();
-                $('#tagline').text(original + entries[rnd]);
+                var originalText = $('#tagline').text();
+                setInterval(() => {
+                    var rnd = Math.floor(Math.random() * entries.length);
+                    var entry = entries[rnd];
+                    $('#tagline').text(originalText + entry);
+                }, 4000); 
             });
         </script>
     </body>
