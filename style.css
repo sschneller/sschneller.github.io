@@ -1,3 +1,4 @@
+/* ////////////////// Global Changes ///////////////// */
 * {
     font-family: 'Josefin Slab', serif;
 }
@@ -5,6 +6,38 @@
 h1 {
     font-family: 'Fredericka the Great', cursive;
 }
+
+img {
+    vertical-align: middle;
+}
+
+a, button {
+    text-decoration: none;
+    outline: medium none;
+}
+
+/* ////////////////// Navbar ///////////////// */
+
+.border-btn {
+    border: 2px solid #fff;
+    color: #212529;
+    background: #fff;
+    border-radius: 30px;
+    text-transform: capitalize;
+    padding: 12px 36px;
+    -moz-user-select: none;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    margin-bottom: 0;
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+}
+
+/* ///////////////// Title Card ////////////////// */
 
 #avatar-outer {
     padding: 5px;
