@@ -83,11 +83,53 @@ body {
     width: 350px !important;
 }
 
+#avatar {
+    width: 330px;
+    height: 330px;
+}
+
+@media (min-width: 576px) and (max-width: 991px) {
+    #avatar-outer {
+        padding: 5px;
+        background-color: #FFFFFF;
+        height: 260px !important;
+        width: 260px !important;
+        margin-right: 73px;
+    }
+
+    #avatar-inner {
+        padding: 10px;
+        background-color: #003300;
+        height: 250px !important;
+        width: 250px !important;
+    }
+
+    #avatar {
+        width: 230px;
+        height: 230px;
+    }
+}
+
 #title-contact {
     position: absolute;
     bottom: 85px;
     left: 0;
     right: 0;
+}
+
+@media (max-width: 575px) {
+    #title-contact {
+        position: absolute;
+        bottom: 11px;
+        left: 0;
+        right: 0;
+    }
+}
+
+@media (max-width: 447px) {
+    #tagline {
+        font-size: 20px;
+    }
 }
 
 .icon {
