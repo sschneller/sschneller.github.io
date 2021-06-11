@@ -35,12 +35,13 @@
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
         <script>
             $(document).ready(async () => {
-                var text = await fetch('./thoughts.txt', {mode: 'cors'})
-                    .then(response => response.text());
-                console.log('text:', text);
+                var entries = await fetch('./thoughts.txt')
+                    .then(response => response.text())
+                    .then(text => text.split(','));
+                var rnd = Math.floor(Math.random() * entries.length);
 
                 var original = $('#tagline').text;
-                // $('#tagline').text = original + ;
+                $('#tagline').text = original + entries[rnd];
             });
         </script>
     </body>
