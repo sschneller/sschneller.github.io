@@ -168,6 +168,42 @@ li {
     }
 }
 
+@media (max-width: 520.98px) {
+    #title-contact {
+        bottom: 1762px;
+    }
+}
+
+@media (max-width: 458.98px) {
+    #title-contact {
+        bottom: 1792px;
+    }
+}
+
+@media (max-width: 454.98px) {
+    #title-contact {
+        bottom: 1822px;
+    }
+}
+
+@media (max-width: 396.98px) {
+    #title-contact {
+        bottom: 1850px;
+    }
+}
+
+@media (max-width: 392.98px) {
+    #title-contact {
+        bottom: 1880px;
+    }
+}
+
+@media (max-width: 388.98px) {
+    #title-contact {
+        bottom: 1910px;
+    }
+}
+
 @media (min-width: 575.98px) and (max-width: 1199.98px) {
     .flex {
         flex: 1;
