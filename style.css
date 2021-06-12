@@ -1,10 +1,15 @@
 /* ///////////////// Global Changes ///////////////// */
+
 * {
-    font-family: 'Josefin Slab', serif;
+    font-family: 'Open Sans', sans-serif;
 }
 
 h1 {
-    font-family: 'Fredericka the Great', cursive;
+    font-family: 'Bungee Shade', cursive;
+}
+
+html {
+    text-rendering: optimizeLegibility;
 }
 
 img {
@@ -22,6 +27,20 @@ a, .button {
 
 body {
     overflow: visible;
+}
+
+p {
+    line-height: 30px;
+    font-size: 18px;
+}
+
+li {
+    display: list-item;
+    text-align: -webkit-match-parent;
+}
+
+.skills-col li + li {
+    margin-top: 5px;
 }
 
 /* ///////////////// Navbar ///////////////// */
@@ -139,8 +158,49 @@ body {
 }
 
 .icon {
-    padding: 8px 7px 6px 7px;
+    padding: 0px 7px 3px 7px;
     margin-right: 1rem;
+}
+
+/* ///////////////// Main Content ///////////////// */
+
+#main-content {
+    padding-top: 120px;
+	padding-bottom: 110px;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    #main-content {
+        padding-top: 70px;
+        padding-bottom: 70px;
+    }
+}
+
+@media (max-width: 767px) {
+    #main-content {
+        padding-top: 60px;
+        padding-bottom: 60px;
+    }
+}
+
+.no-gutters {
+    margin-right: 0;
+    margin-left: 0;
+}
+
+#box {
+	background-color: #FFFFFF;
+	border-radius: 12px;
+	box-shadow: 0 5px 5px 0 rgba(233, 240, 243, 0.5), 0 0 0 1px #E6ECF8;
+}
+
+.is-centered {
+	-webkit-box-pack: center;
+	justify-content: center;
+}
+
+.skills-col {
+    padding: 70px 45px;
 }
 
 /* ///////////////// Scrollspy Button ///////////////// */
