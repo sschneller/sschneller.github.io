@@ -129,21 +129,7 @@ li {
     }
 }
 
-#title-contact {
-    position: absolute;
-    bottom: 85px;
-    left: 0;
-    right: 0;
-}
-
 @media (max-width: 575px) {
-    #title-contact {
-        position: absolute;
-        bottom: 11px;
-        left: 0;
-        right: 0;
-    }
-
     #text-info {
         margin-left: auto;
         margin-right: auto;
@@ -157,6 +143,37 @@ li {
     }
 }
 
+#title-contact {
+    position: absolute;
+    bottom: 941px;
+    left: 0;
+    right: 0;
+}
+
+@media (max-width: 1399.98px) {
+    #title-contact {
+        bottom: 974px;
+    }
+}
+
+@media (max-width: 991.98px) {
+    #title-contact {
+        bottom: 1014px;
+    }
+}
+
+@media (max-width: 767.98px) {
+    #title-contact {
+        bottom: 1734px;
+    }
+}
+
+@media (min-width: 575.98px) and (max-width: 1199.98px) {
+    .flex {
+        flex: 1;
+    }
+}
+
 .icon {
     padding: 0px 7px 3px 7px;
     margin-right: 1rem;
@@ -165,27 +182,20 @@ li {
 /* ///////////////// Main Content ///////////////// */
 
 #main-content {
-    padding-top: 120px;
+    margin-top: -50px;
 	padding-bottom: 110px;
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
     #main-content {
-        padding-top: 70px;
         padding-bottom: 70px;
     }
 }
 
 @media (max-width: 767px) {
     #main-content {
-        padding-top: 60px;
         padding-bottom: 60px;
     }
-}
-
-.no-gutters {
-    margin-right: 0;
-    margin-left: 0;
 }
 
 #box {
@@ -194,13 +204,66 @@ li {
 	box-shadow: 0 5px 5px 0 rgba(233, 240, 243, 0.5), 0 0 0 1px #E6ECF8;
 }
 
+.no-gutters {
+    margin-right: 0;
+    margin-left: 0;
+}
+
 .is-centered {
 	-webkit-box-pack: center;
 	justify-content: center;
 }
 
-.skills-col {
+.fedev-col,
+.des-col {
     padding: 70px 45px;
+}
+
+@media (min-width: 768px) {
+    .des-col {
+        border-left: 1px solid #E6ECF8;
+    }
+}
+
+@media (max-width: 767px) {
+    .des-col {
+        border-top: 1px solid #E6ECF8;
+    }
+}
+
+.image-box {
+    display: block;
+    position: relative;
+    margin: 0 auto 2em;
+}
+
+.image-box i {
+    color: #A77D61;
+    font-size: 48px;
+}
+
+.col-title {
+    margin-top: 1em;
+    margin-bottom: 1.5rem;
+    font-weight: 800;
+}
+
+.col-para {
+    margin-bottom: 2em;
+}
+
+.col-title-sub {
+    margin-top: 50px;
+    margin-bottom: 8px;
+    font-size: 18px;
+    font-weight: 500;
+    color: #a77d61;
+}
+
+.col-list {
+    list-style: none;
+    padding-left: 0;
+    font-size: 18px;
 }
 
 /* ///////////////// Scrollspy Button ///////////////// */
