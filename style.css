@@ -21,7 +21,7 @@ a, button {
     outline: medium none;
 }
 
-a, .button {
+a {
     transition: .3s;
 }
 
@@ -76,6 +76,15 @@ li {
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
+    background-image: url(./banner.png);
+}
+
+.small-header {
+    min-height: initial !important;
+    height: 250px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 100% 25%;
     background-image: url(./banner.png);
 }
 
@@ -141,6 +150,22 @@ li {
     #tagline {
         font-size: 20px;
     }
+}
+
+.typewrite {
+    display: inline-block;
+}
+
+.blinking {
+    animation:blinkingText 2s infinite;
+}
+
+@keyframes blinkingText{
+    0%{     color: #6c757d;    }
+    49%{    color: #6c757d; }
+    60%{    color: transparent; }
+    99%{    color:transparent;  }
+    100%{   color: #6c757d;    }
 }
 
 #title-contact {
@@ -322,4 +347,11 @@ li {
 #back-top a i {
     display: block;
     line-height: 50px;
+}
+
+/* ///////////////// Work Page ///////////////// */
+
+.skinny {
+    margin-left: 20rem !important;
+    margin-right: 20rem !important;
 }
